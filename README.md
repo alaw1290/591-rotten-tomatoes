@@ -7,8 +7,8 @@ Collect Data with Webscrappers:
 	Rotten Tomatoes Browse all movies on DVD/Streaming
 
 	1) Collect names/links to each movie {name: link}
-	
-	2) For each movie:
+
+	2) For each movie /link:
 		Title
 		Tomatometer rating -All (average rating, reviews counted, fresh, rotten)
 		Tomatometer rating -Top (average rating, reviews counted, fresh, rotten)
@@ -17,7 +17,7 @@ Collect Data with Webscrappers:
 		Number of photos
 		Production Info (Parental rating, genres (dictionary of strings), directors, writers, release Date, box office, runtime, studio, cast(# of actors & their names))
 
-	3) All Critics per movie: 
+	3) All Critics per movie /link/reviews: 
 		Name
 		Publisher
 		Tomatometer (boolean) 
@@ -25,3 +25,5 @@ Collect Data with Webscrappers:
 		Original score (if available)
 		Release Date
 
+	Drop movies with no Tomato Rating
+	Drop Non-English Movies
