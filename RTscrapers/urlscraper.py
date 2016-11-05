@@ -18,6 +18,7 @@ def parse_movie_urls():
     #create dict
     movie_list = {}
 
+    #start selenium
     headers = {'User-Agent' : user_agent}
     response = requests.get(base_url, headers=headers)
     html = response.text.encode('utf-8')
