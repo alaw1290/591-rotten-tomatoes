@@ -20,14 +20,28 @@ def parse_movie_urls():
     driver = webdriver.Firefox()
     driver.get(base_url)
 
-    #while show more is there, keep clicking it
+    #clicking loop: keep expanding page till it is showing all movies
     elem = driver.find_element_by_xpath('//*[@id="show-more-btn"]/button')
 
-    for i in range(100):
-        currrentpage = driver.find_element_by_id("content-column")
+    #check current count vs total count
+    soup = BeautifulSoup(driver.page_source,"lxml")
+    show_count = soup.findAll('span',attrs={'id':'showing-count'})[0].text
+    current_count = int(show_count.split(' ')[1])
+    total_count = int(show_count.split(' ')[3])
+    
+    while(current_count <= total_count):
+        
         elem.click()
         WebDriverWait(driver, 10)
-    #driver.close()
+        
+        #check current count vs total count
+        soup = BeautifulSoup(driver.page_source,"lxml")
+        show_count = soup.findAll('span',attrs={'id':'showing-count'})[0].text
+        current_count = int(show_count.split(' ')[1])
+        total_count = int(show_count.split(' ')[3])
+        print(str(current_count) +  ", " + str(total_count))
+
+    driver.close()
     
   
 
