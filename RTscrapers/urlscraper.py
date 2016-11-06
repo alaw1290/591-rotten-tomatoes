@@ -32,7 +32,7 @@ def parse_movie_urls():
     while(current_count <= total_count):
         
         elem.click()
-        WebDriverWait(driver, 10)
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="show-more-btn"]/button')))
         
         #check current count vs total count
         soup = BeautifulSoup(driver.page_source,"lxml")
