@@ -16,8 +16,13 @@ def parse_movie_urls():
     #create dict
     movie_list = {}
 
-    #start selenium driver, route to url
-    driver = webdriver.Firefox()
+    # #start selenium driver
+    # driver = webdriver.Firefox()
+
+    #start selenium headless driver
+    driver = webdriver.PhantomJS()
+    driver.maximize_window()
+
     driver.get(base_url)
 
     #clicking loop: keep expanding page till it is showing all movies
