@@ -10,14 +10,14 @@
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
-import statsmodels.api as sm
+#import statsmodels.api as sm
 import locale
 locale.setlocale( locale.LC_ALL, 'en_US.UTF-8' )
 
 
 #sequence to initiate webpage for scraping
-driver = webdriver.Chrome("/Users/aditi/CS591B/chromedriver")
-url = "https://www.rottentomatoes.com/m/star_trek_beyond"
+driver = webdriver.Firefox()
+url = "https://www.rottentomatoes.com/m/my_dead_boyfriend"
 driver.get(url)
 html = driver.page_source
 soup = BeautifulSoup(html, "lxml")
