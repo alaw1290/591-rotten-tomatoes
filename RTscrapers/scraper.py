@@ -1,12 +1,7 @@
 
 # coding: utf-8
 
-# In[ ]:
-
-
-
-
-# In[2]:
+# In[1]:
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -16,17 +11,14 @@ locale.setlocale( locale.LC_ALL, 'en_US.UTF-8' )
 
 
 #sequence to initiate webpage for scraping
-driver = webdriver.Chrome("/Users/aditi/CS591B/chromedriver")
+driver = webdriver.Chrome("/Users/aditi/Desktop/cs591B/github/CS591B1/RTscrapers/chromedriver")
 url = "https://www.rottentomatoes.com/m/star_trek_beyond"
 driver.get(url)
 html = driver.page_source
 soup = BeautifulSoup(html, "lxml")
 
 
-# In[127]:
-
 #for All Critics
-
 all_critics = soup.find("div", { "id" : "all-critics-numbers" })
 all_critics_tomatometer = int(str(all_critics.find("a", { "id" : 'tomato_meter_link' }).text)[2:4])
 
@@ -46,9 +38,6 @@ all_critics_fresh = int(all_critics_info[1].text)
 #all_critics_rotten
 all_critics_rotten = int(all_critics_info[2].text)
     
-
-
-# In[128]:
 
 #for Top Critics
 
@@ -72,9 +61,6 @@ top_critics_fresh = int(top_critics_info[1].text)
 top_critics_rotten = int(top_critics_info[2].text)
         
 
-
-# In[61]:
-
 #audience score
 audience_score = int(soup.find("div", { "class" : "meter-value" }).text.split("\n")[1][0:2])
 
@@ -86,14 +72,10 @@ audience_average_rating = float(audience_info[3].strip()[0:3])
 audience_number_of_ratings = int(audience_info[7].strip().replace(",", ""))
 
 
-# In[62]:
-
 #Number of Photos and Videos
 number_of_videos = int(soup.find("div", { "class" : 'clickForMore viewMoreVideos' }).text.strip()[-3:-1])
 number_of_photos = int(soup.find("div", { "class" : 'clickForMore viewMorePhotos' }).text.strip()[-3:-1])
 
-
-# In[129]:
 
 #Movie Info
 movie_info = soup.findAll("div", { "class" : 'col col-sm-19 col-xs-14 text-left' })
@@ -126,8 +108,6 @@ movie_studio = str(movie_info[5].text.strip())
 
 
 
-# In[162]:
-
 movie_info_2 = soup.findAll("div", { "class" : 'col-sm-19 col-xs-14 text-left' })
 
 #Movie_director
@@ -152,25 +132,13 @@ movie_release_date = datetime.datetime.strptime(string_of_release_date, '%b %d %
 movie_release_type = release_info[1].strip()
 
 
-# In[ ]:
 
-#Cast List
+#Cast Info
+cast_info = soup.find("div", { "class" : 'castSection '})
+dict2 = {}
+count = 0
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+for i in cast_info.findAll("a", { "class" : 'unstyled articleLink'}):
+    dict2[count] = i.text.strip()
+    count += 1
 
