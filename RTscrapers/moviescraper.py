@@ -71,7 +71,10 @@ def moviescraper(movie_urls):
 	    		all_tom = int(scores.find('div',{'id':'all-critics-numbers'}).find('a',{'id': 'tomato_meter_link'}).text.split('%')[0])
 	    		print(title + ' ' + str(all_tom))
 
-	    		all_tom = float(scores.find('div',{'id':'all-critics-numbers'}).find('div',{'class': 'superPageFontColor'}).text.split(':')[1].strip().split('/')[0])
+	    		all_avg = float(scores.find('div',{'id':'all-critics-numbers'}).find('div',{'class': 'superPageFontColor'}).text.split(':')[1].strip().split('/')[0])
+	    		print(title + ' ' + str(all_tom))
+
+	    		all_count = float(scores.find('div',{'id':'all-critics-numbers'}).find('div',{'class': 'superPageFontColor'}).text.split(':')[1].strip().split('/')[0])
 	    		print(title + ' ' + str(all_tom))
 
 	    	except Exception as e:
