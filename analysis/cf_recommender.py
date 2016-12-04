@@ -23,7 +23,7 @@ def weighted_average(user_vector,critics_sim,movie_keys,critic_keys,movie_critic
 					val = 1
 				else:
 					val = -1
-				weight_total += critics_sim[c]
+				weight_total += abs(critics_sim[c])
 				score_total += val * critics_sim[c]
 
 			if weight_total > 0:
