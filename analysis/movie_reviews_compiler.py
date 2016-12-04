@@ -71,12 +71,6 @@ def export_pickle(movie_critic,critic_movie,matrix,movie_keys,critic_keys):
 	pickle.dump(movie_keys, open(path +  "movie_keys.pkl", "wb" ) )
 	pickle.dump(critic_keys, open(path +  "critic_keys.pkl", "wb" ) )
 
-def run():
-	a,b,c,d,e = import_pickle()
-	export_pickle(a,b,c,d,e)
-
-if __name__ == '__main__':
-	run()
 
 
 
