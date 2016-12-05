@@ -54,26 +54,11 @@ def run_cosine(user_vector,matrix,movie_critic,movie_keys, critic_keys):
 			val = cosine_similarity([i for i in user_vector if i != 0],[row[i] for i in range(len(row)) if user_vector[i] != 0])
 			if val != 0:
 				critic_sim[c] = val
-		# row = [i if i > 0 else 0 for i in matrix[key]]
-		# negarow = [-1*i if i < 0 else 0 for i in matrix[key]]
-
-		# if(len([i for i in row if i != 0]) >= 5):
-		# 	#ignore critics with less than 5 reviews
-			
-		# 	#add critic to similiarity set with similarity score
-		# 	critic_sim[c] = cosine_similarity(user_vector,row)
-
-		# if(len([i for i in negarow if i != 0]) >= 5):
-		# 	#ignore critics with less than 5 reviews
-			
-		# 	#add critic to similiarity set with similarity score
-		# 	critic_sim['nega-' + c] = cosine_similarity(user_vector,negarow)
-
 
 	return critic_sim
 
 def run_pearson(user_vector,matrix,movie_critic,movie_keys, critic_keys):
-	'''given user input vector, compute list of cosine similarities with critics
+	'''given user input vector, compute list of pearson correlation coefficient similarities with critics
 		drop critics that have 5 or less reviews (do not contribute enough to make any meaningful predictions'''
 
 	#find list of critics that share at least one review
@@ -91,20 +76,5 @@ def run_pearson(user_vector,matrix,movie_critic,movie_keys, critic_keys):
 			 val, pval = pearsonr_correlation([i for i in user_vector if i != 0],[row[i] for i in range(len(row)) if user_vector[i] != 0])
 			 if val != 0:
 			 	critic_sim[c] = (val, pval)
-		# row = [i if i > 0 else 0 for i in matrix[key]]
-		# negarow = [-1*i if i < 0 else 0 for i in matrix[key]]
-
-		# if(len([i for i in row if i != 0]) >= 5):
-		# 	#ignore critics with less than 5 reviews
-			
-		# 	#add critic to similiarity set with similarity score
-		# 	critic_sim[c] = cosine_similarity(user_vector,row)
-
-		# if(len([i for i in negarow if i != 0]) >= 5):
-		# 	#ignore critics with less than 5 reviews
-			
-		# 	#add critic to similiarity set with similarity score
-		# 	critic_sim['nega-' + c] = cosine_similarity(user_vector,negarow)
-
 
 	return critic_sim
