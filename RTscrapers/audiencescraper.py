@@ -9,7 +9,7 @@ base_url_1 = 'https://www.rottentomatoes.com/user/id/'
 base_url_2 = '/ratings'
 
 dope_ass_audience_test_set = {}
-path = 'project/CS591B1/data/'
+path = '../data/'
 
 def import_pickle():
     try:
@@ -52,8 +52,8 @@ for i in range(0, 1000000):
     if(len(audienceFuckChads) == cap):
         break
 
-pickle.dump(audienceFuckChadData, open('audience_test_data.pkl', 'wb'))
-pickle.dump(audienceFuckChads, open('audience_names.pkl', 'wb'))
+pickle.dump(audienceFuckChadData, open(path + 'audience_test_data.pkl', 'wb'))
+pickle.dump(audienceFuckChads, open(path + 'audience_names.pkl', 'wb'))
            
 
 ##dat_movie_data = import_pickle()
