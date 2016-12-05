@@ -45,11 +45,9 @@ def weighted_sums(user_vector,critics_sim,movie_keys,critic_keys,movie_critic,cr
                         movie = movie_keys[i]
 
                         for c in set(movie_critic[movie].keys()).intersection(critics_sim.keys()):
-                                suM = 0
-                                print(c)
-                                for movie in critic_movie[c]:
-                                        suM += int(critic_movie[c][movie])
-                                average_rating = suM/len(critic_movie[c])
+                                
+                                average_rating = sum([1 if i else -1 for i in list(critic_movie[c].values())])/len(critic_movie[c])
+                                
                                 if(movie_critic[movie][c]):
                                         val = 1
                                 else:
