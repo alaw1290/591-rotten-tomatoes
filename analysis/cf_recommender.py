@@ -1,4 +1,3 @@
-
 path = '../data/'
 
 def weighted_average(user_vector,critics_sim,movie_keys,critic_keys,movie_critic):
@@ -35,51 +34,60 @@ def weighted_average(user_vector,critics_sim,movie_keys,critic_keys,movie_critic
 
 def weighted_sums(user_vector,critics_sim,movie_keys,critic_keys,movie_critic,avg_ratings):
 
-        prediction_vector = [i for i in user_vector]
-        avg_user_ratiing = sum(user_vector)/len([0 for i in user_vector if i != 0])
+	prediction_vector = [i for i in user_vector]
+	avg_user_ratiing = sum(user_vector)/len([0 for i in user_vector if i != 0])
 
-        for i in range(len(prediction_vector)):
-                if prediction_vector[i] == 0:
-                        weight_total = 0
-                        value_total = 0
+	for i in range(len(prediction_vector)):
+		if prediction_vector[i] == 0:
+			weight_total = 0
+			value_total = 0
+			movie = movie_keys[i]
 
-                        movie = movie_keys[i]
+			for c in set(movie_critic[movie].keys()).intersection(critics_sim.keys()):
+				
+				average_rating = avg_ratings[c]
+				if(movie_critic[movie][c]):
+					val = 1
+				else:
+					val = -1
+				weight_total += abs(critics_sim[c])
+				value_total += (val - average_rating)*critics_sim[c]
 
-                        for c in set(movie_critic[movie].keys()).intersection(critics_sim.keys()):
-                                
-                                average_rating = avg_ratings[c]
-                                
-                                if(movie_critic[movie][c]):
-                                        val = 1
-                                else:
-                                        val = -1
+			if weight_total > 0:
+				prediction_vector[i] = value_total/weight_total
 
-                                weight_total += abs(critics_sim[c])
-                                value_total += (val - average_rating)*critics_sim[c]
-
-
-                        if weight_total > 0:
-                                prediction_vector[i] = value_total/weight_total
-
-        return prediction_vector
+	return prediction_vector
 
 
-def user_based_top_k(user_vector, critics_sim, movie_keys, critic_keys, movie_critic, k, movie):
+def user_based_top_k(user_vector, critics_sim, movie_keys, critic_keys, movie_critic, k):
+	'''return predictions based on the % of critics that rated movie i to what degree'''
 
-        if k > len(critics_sim):
-                k = len(critics_sim)
-                print('Reduced to %k' %(k))
-        print(len(critics_sim))
-        criticSim = sorted([(k,critics_sim[k]) for k in critics_sim], key = lambda tup: tup[1])
-        prediction_vector = [i for i in user_vector]
+	#if not enough k critics then reduce to size of the critic set
+	if k > len(critics_sim):
+		k = len(critics_sim)
 
-        rec_items = [0]*len(prediction_vector)
-        
-        for i in range(k):
-                print(critic_keys.index(criticSim[i][0]))
-                rec_items = [rec_items[l] + movie[critic_keys.index(criticSim[i][0])][l]/k for l in range(len(prediction_vector))]
-        for i in range(len(prediction_vector)):
-                if prediction_vector[i] == 0:
-                        prediction_vector[i] = rec_items[i]
-                        
-        return prediction_vector
+	#only use top k most signficant similar results, grab top 10
+	top_k_critics = sorted([(key,critics_sim[key]) for key in critics_sim], key = lambda tup: abs(tup[1]))[-k:]
+	prediction_vector = [i for i in user_vector]
+
+	#make predictions for empty values
+	for i in range(len(prediction_vector)):
+		if prediction_vector[i] == 0:
+			
+			# weight_total = 0
+			value_total = 0
+			movie = movie_keys[i]
+
+			for critic in top_k_critics:
+				name = critic[0]
+				if(name in movie_critic[movie]):
+					# weight_total += 1
+					if movie_critic[movie][name]:
+						value_total += 1
+					else:
+						value_total -= 1
+
+			if True: #weight_total > 0:
+				prediction_vector[i] = value_total / k
+			
+	return prediction_vector
