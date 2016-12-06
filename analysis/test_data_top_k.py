@@ -6,7 +6,7 @@ import movie_reviews_compiler as mrc
 
 path = '../data/'
 
-def run_test_top_k(k=10):
+def run_test_top_k(cosine=True,k=10):
 	'''compute the predictions for masked values in the testing set (user review vectors) using the training set (critic review matrix)
 		model for predictions: average of top k critics using cosine similiarity'''
 
@@ -43,7 +43,11 @@ def run_test_top_k(k=10):
 				vector[mask] = 0
 
 				#compute predicted value
-				critics_sim = sf.run_cosine(vector,matrix,movie_critic,movie_keys,critic_keys)
+				if(cosine):
+					critics_sim = sf.run_cosine(vector,matrix,movie_critic,movie_keys,critic_keys)
+				else:
+					critics_sim = sf.run_pearson(vector,matrix,movie_critic,movie_keys,critic_keys)
+					
 				result_vector = cf.user_based_top_k(vector,critics_sim,movie_keys,critic_keys,movie_critic,k)
 
 				print('\tPredicted for index ' + str(mask) + ': ' + str(result_vector[mask]))
@@ -66,6 +70,9 @@ def run_test_top_k(k=10):
 			top_k_results[name] = 'Error'
 
 	#export weighted sums results
-	pickle.dump(top_k_results, open(path +  "top_k_results.pkl", "wb" ) )
-
+	if(cosine):
+		pickle.dump(top_k_results, open(path +  "top_k_results_cosine.pkl", "wb" ) )
+	else:
+		pickle.dump(top_k_results, open(path +  "top_k_results_pearson.pkl", "wb" ) )
+		
 	return top_k_results

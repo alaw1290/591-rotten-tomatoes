@@ -6,7 +6,7 @@ import movie_reviews_compiler as mrc
 
 path = '../data/'
 
-def run_test_weighted_sums():
+def run_test_weighted_sums(cosine=True):
 	'''compute the predictions for masked values in the testing set (user review vectors) using the training set (critic review matrix)
 		model for predictions: weighted sum of critics using cosine similiarity'''
 
@@ -20,7 +20,7 @@ def run_test_weighted_sums():
 	#compute average ratings for weighted sum
 	avg_ratings = {}
 	for i in range(len(matrix)):
-		avg_ratings[critic_keys[i]] = np.average(matrix[i])
+		avg_ratings[critic_keys[i]] = sum(matrix[i])/len([0 for j in matrix[i] if j != 0]) 
 
 	#store results for pickle
 	weighted_sums_results = {}
@@ -48,7 +48,11 @@ def run_test_weighted_sums():
 				vector[mask] = 0
 
 				#compute predicted value
-				critics_sim = sf.run_cosine(vector,matrix,movie_critic,movie_keys, critic_keys)
+				if(cosine):
+					critics_sim = sf.run_cosine(vector,matrix,movie_critic,movie_keys,critic_keys)
+				else:
+					critics_sim = sf.run_pearson(vector,matrix,movie_critic,movie_keys,critic_keys)
+					
 				result_vector = cf.weighted_sums(vector,critics_sim,movie_keys,critic_keys,movie_critic, avg_ratings)
 
 				print('\tPredicted for index ' + str(mask) + ': ' + str(result_vector[mask]))
@@ -71,6 +75,9 @@ def run_test_weighted_sums():
 			weighted_sums_results[name] = 'Error'
 
 	#export weighted sums results
-	pickle.dump(weighted_sums_results, open(path +  "weighted_sums_results.pkl", "wb" ) )
+	if(cosine):
+		pickle.dump(weighted_sums_results, open(path +  "weighted_sums_results_cosine.pkl", "wb" ) )
+	else:
+		pickle.dump(weighted_sums_results, open(path +  "weighted_sums_results_pearson.pkl", "wb" ) )
 
 	return weighted_sums_results

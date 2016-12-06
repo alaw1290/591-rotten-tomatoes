@@ -75,6 +75,6 @@ def run_pearson(user_vector,matrix,movie_critic,movie_keys, critic_keys):
 			#add critic to similiarity set with similarity score
 			 val, pval = pearsonr_correlation([i for i in user_vector if i != 0],[row[i] for i in range(len(row)) if user_vector[i] != 0])
 			 if val != 0:
-			 	critic_sim[c] = (val, pval)
+			 	critic_sim[c] = val
 
 	return critic_sim

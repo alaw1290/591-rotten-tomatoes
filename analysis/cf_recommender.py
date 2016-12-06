@@ -35,7 +35,7 @@ def weighted_average(user_vector,critics_sim,movie_keys,critic_keys,movie_critic
 def weighted_sums(user_vector,critics_sim,movie_keys,critic_keys,movie_critic,avg_ratings):
 
 	prediction_vector = [i for i in user_vector]
-	avg_user_ratiing = sum(user_vector)/len([0 for i in user_vector if i != 0])
+	avg_user_rating = sum(user_vector)/len([0 for i in user_vector if i != 0])
 
 	for i in range(len(prediction_vector)):
 		if prediction_vector[i] == 0:
@@ -54,7 +54,12 @@ def weighted_sums(user_vector,critics_sim,movie_keys,critic_keys,movie_critic,av
 				value_total += (val - average_rating)*critics_sim[c]
 
 			if weight_total > 0:
-				prediction_vector[i] = value_total/weight_total
+				val = avg_user_rating + (value_total/weight_total)
+				if val > 1:
+					val = 1.0
+				if val < -1:
+					val = -1.0
+				prediction_vector[i] = val
 
 	return prediction_vector
 
